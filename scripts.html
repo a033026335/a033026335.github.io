@@ -5,6 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scripts - Alex's Portfolio</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script>
+        async function fetchGitHubRepo(repoUrl, elementId) {
+            const apiUrl = `https://api.github.com/repos/${repoUrl}`;
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch repository data');
+                }
+                const repoData = await response.json();
+
+                document.getElementById(elementId).innerHTML = `
+                    <h3><a href="${repoData.html_url}" target="_blank">${repoData.full_name}</a></h3>
+                    <p>${repoData.description}</p>
+                    <p>⭐ Stars: ${repoData.stargazers_count} | 🍴 Forks: ${repoData.forks_count}</p>
+                    <p>🔗 <a href="${repoData.html_url}" target="_blank">View on GitHub</a></p>
+                `;
+            } catch (error) {
+                document.getElementById(elementId).innerHTML = `<p>Error fetching repository data.</p>`;
+            }
+        }
+
+        // Fetch repository details when the page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchGitHubRepo('a033026335/BurpAPIsExtension', 'burpRepo');
+            fetchGitHubRepo('a033026335/Parse_scope', 'scopeRepo');
+            fetchGitHubRepo('a033026335/Scripts', 'penTestRepo');
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -21,14 +49,17 @@
     </nav>
     <section id="scripts">
         <h2>Scripts</h2>
-        <p>Check out my Burp Suite Extension scripts on <a href="https://github.com/a033026335/BurpAPIsExtension" target="_blank">APIs2BurpRepeater</a>.</p>
-        <iframe src="https://github.com/a033026335/BurpAPIsExtension" width="100%" height="400"></iframe>
+        <div id="burpRepo">
+            <p>Loading Burp Suite Extension scripts...</p>
+        </div>
 
-        <p>Check out my scoping scripts on <a href="https://github.com/a033026335/Parse_scope" target="_blank">Parse_Scope</a>.</p>
-        <iframe src="https://github.com/a033026335/Parse_scope" width="100%" height="400"></iframe>
+        <div id="scopeRepo">
+            <p>Loading scoping scripts...</p>
+        </div>
 
-        <p>Check out my pen test scripts on <a href="https://github.com/a033026335/Scripts" target="_blank">Pen Test Scripts</a>.</p>
-        <iframe src="https://github.com/a033026335/Scripts" width="100%" height="400"></iframe>
+        <div id="penTestRepo">
+            <p>Loading pen test scripts...</p>
+        </div>
     </section>
     <footer>
         <p>Contact me at <a href="mailto:a033026335@gmail.com">a033026335@gmail.com</a></p>
